@@ -4,6 +4,8 @@ namespace passwordGenerator
     {
         string alphabet = "abcdefghijklmnopqrstuvwxyz";
         string symbols = "-=!@#$%^&*()_+[]\\{}|;':\",.<>/?";
+        
+
 
         public Form1()
         {
@@ -25,38 +27,54 @@ namespace passwordGenerator
         {
 
         }
-
+        public bool isInFile(string word) 
+        {
+            StreamReader reader = new StreamReader("../../../rockyou.txt");
+            string s;
+            while (true) {
+                s = reader.ReadLine();
+                if (s == word)
+                    return true;
+                if (s == null) return false;
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             string Text = textBox1.Text;
             int n;
             string Result = "";
             bool isNumeric = int.TryParse(Text, out n);
+
             if (!isNumeric) 
             {
                 return;
             }
             Random random = new Random();
-            for (int i = 0; i < int.Parse(Text); i++) 
+            do
             {
-                int IsCapital = random.Next(0,2);
-                string alphabet2 = alphabet;
-                if (checkBox2.Checked)
+                Result = "";
+                for (int i = 0; i < int.Parse(Text); i++)
                 {
-                    alphabet2 += symbols;
-                }
-                int index = random.Next(alphabet2.Length);
-                char key = alphabet2[index];
-                if (IsCapital == 0)
-                {
-                    Result += key.ToString().ToUpper();
-                }
-                else
-                {
-                    Result += key.ToString();
-                }
+                    int IsCapital = random.Next(0, 2);
+                    string alphabet2 = alphabet;
+                    if (checkBox2.Checked)
+                    {
+                        alphabet2 += symbols;
+                    }
+                    int index = random.Next(alphabet2.Length);
+                    char key = alphabet2[index];
+                    if (IsCapital == 0)
+                    {
+                        Result += key.ToString().ToUpper();
+                    }
+                    else
+                    {
+                        Result += key.ToString();
+                    }
 
+                }
             }
+            while (isInFile(Result));
             label3.Text = Result;
         }
     }
